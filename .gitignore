@@ -1,0 +1,13 @@
+# folder
+.DS_Store
+wandb/
+__pycache__/
+.ipynb_checkpoints/
+.vscode/
+
+# file type
+*.egg-info
+*.egg
+*.pyc
+*.ipynb
+*.code-workspace

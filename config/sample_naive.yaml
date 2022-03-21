@@ -1,0 +1,95 @@
+# sample_naive
+arch:
+  CRITIC_HAS_ACT_IND: false
+  ACT_IND: null
+  ACTIVATION:
+    actor: Tanh
+    critic: Tanh
+  APPEND_DIM: 0
+  DIM_LIST:
+    actor:  #! neurons for hidden layers
+    - 128
+    - 256
+    - 256
+    - 128
+    critic:  #! neurons for hidden layers
+    - 128
+    - 256
+    - 256
+    - 128
+
+environment:
+  ENV_NAME: "spiritRL-v0"
+  STATE_DIM: 42  # 2*num_joints + 2*3 (x, y, z and their dots) + 2*3 (yaw, pitch, roll and their dots) + 2*3 (velx, vely, velz and their dots)
+  ACTION_DIM: 12  # the number of joints
+  ACTION_RANGE:  #! [amin, amax] for each dimension
+    - [-0.5, 0.5]
+    - [0.5, 2.64]
+    - [0.5, 2.64]
+    - [-0.5, 0.5]
+    - [0.5, 2.64]
+    - [0.5, 2.64]
+    - [-0.5, 0.5]
+    - [0.5, 2.64]
+    - [0.5, 2.64]
+    - [-0.5, 0.5]
+    - [0.5, 2.64]
+    - [0.5, 2.64]
+  MAX_TRAIN_STEPS: 1000
+  MAX_EVAL_STEPS: 1000
+  SPECIFIC: null
+  DONE_TYPE: fail
+
+training:
+  # output
+  USE_WANDB: true
+  PROJECT_NAME: spirit-rl-pybullet
+  NAME: train_ra
+  OUT_FOLDER: SAC_preTrained
+  CHECK_OPT_FREQ: 250
+  SAVE_TOP_K: 20
+  SAVE_METRIC: safety
+  # env/agent setup
+  SEED: 0
+  NUM_CPUS: 1
+  DEVICE: cuda:0
+  AGENT_NAME: naiveRL
+  # train
+  MAX_STEPS: 2500000
+  MEMORY_CAPACITY: 100000
+  MIN_STEPS_B4_OPT: 100000
+  OPTIMIZE_FREQ: 100
+  UPDATE_PER_OPT: 100
+
+update:
+  MAX_MODEL: 20
+  ALPHA: 0.01
+  LEARN_ALPHA: true
+  BATCH_SIZE: 64
+  DEVICE: cuda:0
+  GAMMA: 0.9
+  GAMMA_DECAY: 0.5
+  GAMMA_END: 0.99999
+  GAMMA_PERIOD: 400000
+  GAMMA_SCHEDULE: true
+  LATENT_DIM: 0
+  LR_A: 0.001
+  LR_C: 0.001
+  LR_Al: 0.0005
+  LR_A_END: 0.0001
+  LR_C_END: 0.0001
+  LR_Al_END: 0.00005
+  LR_A_PERIOD: 50000
+  LR_C_PERIOD: 50000
+  LR_Al_PERIOD: 100000
+  LR_A_DECAY: 0.9
+  LR_C_DECAY: 0.9
+  LR_Al_DECAY: 0.9
+  LR_A_SCHEDULE: false
+  LR_C_SCHEDULE: false
+  LR_Al_SCHEDULE: true
+  MODE: RA
+  TAU: 0.01
+  TERMINAL_TYPE: max
+  EVAL: false
+  UPDATE_PERIOD: 2 # of the actor
