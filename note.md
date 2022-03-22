@@ -48,5 +48,16 @@ Mass of robot: body + 4 x (hip link + upper link + lower link + toe) = 11.51 (kg
 360 rpm ~ 37.699112 rad/s
 245 rpm ~ 25.65634 rad/s
 
+# Proposed changes
+Hip and abduction joint:
+* torque: 40 --> 21 Nm
+* velocity: 30 --> 37.7 rad/s
+
+Knee joint
+* torque: 40 --> 32 Nm
+* velocity: 30 --> 25.67 rad/s
+
+Robot's mass can be left unchanged.
+
 # Reference
 ![ROS URDF safety limit for joint explanation](http://wiki.ros.org/pr2_controller_manager/safety_limits)
