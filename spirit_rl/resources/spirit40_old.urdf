@@ -104,7 +104,7 @@ SOFTWARE.
     <child link="hip0"/>
     <axis xyz="1 0 0"/>
     <origin xyz="0.2263 0.07 0"/>
-    <limit effort="21" lower="-0.707" upper="0.707" velocity="37.7"/>
+    <limit effort="40" lower="-0.707" upper="0.707" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Upper leg -->
@@ -134,7 +134,7 @@ SOFTWARE.
     <axis xyz="0 -1 0"/>
     <origin xyz="0.0 0.10098 0"/>
     <!--  rpy="0 -0.3 0" -->
-    <limit effort="21" lower="-6.28318530718" upper="6.28318530718" velocity="37.7"/>
+    <limit effort="40" lower="-6.28318530718" upper="6.28318530718" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Lower leg -->
@@ -164,7 +164,7 @@ SOFTWARE.
     <axis xyz="0 1 0"/>
     <origin xyz="-0.206 0 0"/>
     <!--rpy="0 0.5 0"-->
-    <limit effort="32" lower="0" upper="3.14159265359" velocity="25.67"/>
+    <limit effort="40" lower="0" upper="3.14159265359" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Toe -->
@@ -229,7 +229,7 @@ SOFTWARE.
     <child link="hip1"/>
     <axis xyz="1 0 0"/>
     <origin xyz="-0.2263 0.07 0"/>
-    <limit effort="21" lower="-0.707" upper="0.707" velocity="37.7"/>
+    <limit effort="40" lower="-0.707" upper="0.707" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Upper leg -->
@@ -259,7 +259,7 @@ SOFTWARE.
     <axis xyz="0 -1 0"/>
     <origin xyz="-0.0 0.10098 0"/>
     <!--  rpy="0 -0.3 0" -->
-    <limit effort="21" lower="-6.28318530718" upper="6.28318530718" velocity="37.7"/>
+    <limit effort="40" lower="-6.28318530718" upper="6.28318530718" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Lower leg -->
@@ -289,7 +289,7 @@ SOFTWARE.
     <axis xyz="0 1 0"/>
     <origin xyz="-0.206 0 0"/>
     <!--rpy="0 0.5 0"-->
-    <limit effort="32" lower="0" upper="3.14159265359" velocity="25.67"/>
+    <limit effort="40" lower="0" upper="3.14159265359" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Toe -->
@@ -354,7 +354,7 @@ SOFTWARE.
     <child link="hip2"/>
     <axis xyz="1 0 0"/>
     <origin xyz="0.2263 -0.07 0"/>
-    <limit effort="21" lower="-0.707" upper="0.707" velocity="37.7"/>
+    <limit effort="40" lower="-0.707" upper="0.707" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Upper leg -->
@@ -384,7 +384,7 @@ SOFTWARE.
     <axis xyz="0 -1 0"/>
     <origin xyz="0.0 -0.10098 0"/>
     <!--  rpy="0 -0.3 0" -->
-    <limit effort="21" lower="-6.28318530718" upper="6.28318530718" velocity="37.7"/>
+    <limit effort="40" lower="-6.28318530718" upper="6.28318530718" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Lower leg -->
@@ -414,7 +414,7 @@ SOFTWARE.
     <axis xyz="0 1 0"/>
     <origin xyz="-0.206 0 0"/>
     <!--rpy="0 0.5 0"-->
-    <limit effort="32" lower="0" upper="3.14159265359" velocity="25.67"/>
+    <limit effort="40" lower="0" upper="3.14159265359" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Toe -->
@@ -479,7 +479,7 @@ SOFTWARE.
     <child link="hip3"/>
     <axis xyz="1 0 0"/>
     <origin xyz="-0.2263 -0.07 0"/>
-    <limit effort="21" lower="-0.707" upper="0.707" velocity="37.7"/>
+    <limit effort="40" lower="-0.707" upper="0.707" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Upper leg -->
@@ -509,7 +509,7 @@ SOFTWARE.
     <axis xyz="0 -1 0"/>
     <origin xyz="-0.0 -0.10098 0"/>
     <!--  rpy="0 -0.3 0" -->
-    <limit effort="21" lower="-6.28318530718" upper="6.28318530718" velocity="37.7"/>
+    <limit effort="40" lower="-6.28318530718" upper="6.28318530718" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Lower leg -->
@@ -539,7 +539,7 @@ SOFTWARE.
     <axis xyz="0 1 0"/>
     <origin xyz="-0.206 0 0"/>
     <!--rpy="0 0.5 0"-->
-    <limit effort="32" lower="0" upper="3.14159265359" velocity="25.67"/>
+    <limit effort="40" lower="0" upper="3.14159265359" velocity="30"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
   <!-- Toe -->
