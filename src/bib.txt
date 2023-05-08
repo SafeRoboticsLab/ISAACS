@@ -1,0 +1,6 @@
+@inproceedings{hsunguyen2023isaacs,
+  title = 	  {ISAACS: Iterative Soft Adversarial Actor-Critic for Safety},
+  author =    {Kai-Chieh Hsu and Duy P. Nguyen and Jaime F. Fisac},
+  booktitle = {Proceedings of the 5th Conference on Learning for Dynamics and Control},
+  year = 	    {2023},
+}
