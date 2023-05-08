@@ -83,7 +83,7 @@ categories: projects
       <table align=center width=600px><tr><td><p align="justify" width="20%">
       We propose ISAACS, a two-stage safe learning framework.
       <br><br>
-      1. <tagged style="color: rgb(255, 128, 0)">Offline Adversarial Reinforcement Learning</tagged>: safety policy is jointly trained with an adversarial disturbance.
+      1. <tagged style="color: rgb(29, 177, 2)">Offline Adversarial Reinforcement Learning</tagged>: safety policy is jointly trained with an adversarial disturbance.
       <br><br>
       2. <tagged style="color: rgb(255, 128, 0)">Online Robust Rollout-based Safety Filter</tagged>: our safety filter carries out a finite imagined gameplay between trained policies to determine whether it is safe to accept the control from an arbitrary task policy (checking orange forward reachable set). However, naive rollout results in a false safe prediction (only checking blue trajectory).
       </p></td></tr></table></p>
