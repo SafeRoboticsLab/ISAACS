@@ -74,7 +74,7 @@ categories: projects
 
   <table border="0" cellspacing="10" cellpadding="0" align="center">
     <tbody><tr><td align="center" valign="middle">
-      <a href="./src/overview.pdf"><img src="./src/overview.pdf" style="width:85%"></a>
+      <a href="./src/overview.png"><img src="./src/overview.png" style="width:85%"></a>
     </td></tr></tbody>
   </table>
 
