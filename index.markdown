@@ -16,7 +16,7 @@ categories: projects
   </script>
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <title>Sim-to-Lab-to-Real</title>
+  <title>ISAACS</title>
 
   <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
