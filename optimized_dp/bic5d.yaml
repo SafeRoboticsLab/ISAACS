@@ -1,0 +1,72 @@
+dyn:
+  uMode: max
+  horizon: 2.0
+  dt: 0.05
+  L: 0.257
+  ctrl_bound: [3.5, 5.0]
+  dstb_bound: [0.1, 0.1, 0.1, 0.1, 0.1]
+  v_min: 0.4
+  v_max: 2
+  delta_min: -0.35  # rad
+  delta_max: 0.35
+
+log:
+  out_folder: experiments/odp/bic5D/env_61_0.1_obs_road
+  plot_vf: false
+  plot_type: 2d
+  slicesCut: [10, 10, 10]
+  verbose: true
+
+solver:
+  grid_min: [ 0.0, -0.6, 0.2, -1.571, -0.4]
+  grid_max: [20.0,  0.6, 2.2,  1.571,  0.4]
+  pts_each_dim: [161, 21, 21, 61, 21]
+  init_value_file: experiments/odp/bic5D/env_61_obs_road_init.pkl
+
+cost:
+  track_len: 20
+  track_width_right: .6
+  track_width_left: .6
+  # loop: true
+  state_box_limit: [0., 0.5, -0.1, 0.1]
+  wheelbase: 0.257
+  obs_spec:
+    - [2, -0.4, 0., 0.25, 0.1]
+    - [5, 0.4, 0., 0.25, 0.1]
+    - [8, 0.1, 0., 0.25, 0.1]
+    - [11, -0.1, 0., 0.25, 0.1]
+    - [14, -0.4, 0., 0.25, 0.1]
+    - [14, 0.4, 0., 0.25, 0.1]
+  bidirectional: false
+  cost_type: Lagrange
+  # CONSTRAINT PARAM
+  q1_road: 1.
+  q2_road: 10.
+  q1_yaw: 1.
+  q2_yaw: 10.
+  q1_obs: 1.
+  q2_obs: 10.
+  # COST PARAM
+  track_offset: 0.5
+  w_vel: 4.
+  w_contour: 4.
+  w_theta: 0.
+  w_accel: 0.01
+  w_omega: 0.01
+  v_ref: 1.5
+  barrier_clip_min: -0.25
+  barrier_clip_max: 5.0
+  #
+  # buffer: 0.05
+  yaw_min: -1.5707
+  yaw_max: 1.5707
+  has_vel_constr: false
+  has_delta_constr: false
+  # v_min: 0.4
+  # v_max: 2.
+  # delta_min: -0.35
+  # delta_max: 0.35
+  # q1_v: 1.
+  # q2_v: 10.
+  # q1_delta: 1.
+  # q2_delta: 10.

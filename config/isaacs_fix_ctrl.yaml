@@ -1,0 +1,197 @@
+environment:
+  seed: 0
+  # TRACK
+  track_len: 20
+  track_width_right: .6
+  track_width_left: .6
+  # loop: true
+  timeout: 300
+  # DONE FLAG PARAM
+  end_criterion: failure
+  g_x_fail: 0.1
+  obs_type: perfect
+  obs_spec:
+    - [2, -0.4, 0., 0.25, 0.1]
+    - [5, 0.4, 0., 0.25, 0.1]
+    - [8, 0.1, 0., 0.25, 0.1]
+    - [11, -0.1, 0., 0.25, 0.1]
+    - [14, -0.4, 0., 0.25, 0.1]
+    - [14, 0.4, 0., 0.25, 0.1]
+  reset_space:
+    - [0., 1.]
+    - [-0.6, 0.6]
+    - [0.4, 2.0]
+    - [-1.5707, 1.5707]
+    - [-0.35, 0.35]
+
+cost:
+  bidirectional: false
+  cost_type: Lagrange
+  # CONSTRAINT PARAM
+  q1_road: 1.
+  q2_road: 10.
+  q1_yaw: 1.
+  q2_yaw: 10.
+  q1_obs: 1.
+  q2_obs: 10.
+  # COST PARAM
+  track_offset: 0.5
+  w_vel: 4.
+  w_contour: 4.
+  w_theta: 0.
+  w_accel: 0.01
+  w_omega: 0.01
+  v_ref: 1.5
+  barrier_clip_min: -0.25
+  barrier_clip_max: 5.0
+  #
+  yaw_min: -1.5707
+  yaw_max: 1.5707
+  has_vel_constr: false
+  has_delta_constr: false
+
+agent:
+  agent_id: ego
+  dyn: BicycleDstb5D
+  footprint: Box
+  state_box_limit: [0., 0.5, -0.1, 0.1]
+  action_range:
+    ctrl:
+      - [-3.5, 3.5]
+      - [-5., 5.]
+    dstb:
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+  weight : 2.99  # kg
+  # CAR DYNAMICS
+  wheelbase: 0.257
+  dt: 0.1
+  v_min: 0.4
+  v_max: 2.
+  delta_min: -0.35
+  delta_max: 0.35
+
+solver:
+  device: cuda:0
+  # trains
+  num_envs: 8
+  max_steps: 4000000  #!
+  memory_capacity: 50000
+  min_steps_b4_exploit: 50000
+  min_steps_b4_opt: 50000  #!
+  opt_freq: 2000
+  update_per_opt: 200
+  max_model: 50
+  batch_size: 128
+  warmup_action_range:
+    dstb:
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+  dstb_sample_type: recent
+  # evaluates
+  check_opt_freq: 25
+  num_eval_traj: 400  #!
+  eval_timeout: 300
+  rollout_end_criterion: failure
+  save_top_k:
+    ctrl: 10
+    dstb: 10
+  save_metric: safety
+  venv_device: cpu
+  # visualizes
+  vis: true
+  fig_size_x: 10
+  fig_size_y: 2
+  cmap_res_x: 250
+  cmap_res_y: 10
+  # logs
+  use_wandb: true  #!
+  project_name: pretrain_dstb
+  name: v3
+  out_folder: experiments/pre_dstb/v3
+
+arch:
+  actor_0:
+    mlp_dim:
+      - 256
+      - 256
+      - 256
+    activation: ReLU
+    append_dim: 0
+    latent_dim: 0
+    obs_dim: 5
+    action_dim: 2
+    action_range:
+      [ [-3.5, 3.5],
+        [-5., 5.]]
+    pretrained_path: experiments/pre_ctrl/v1/model/ctrl/ctrl-3800000.pth
+  actor_1:
+    mlp_dim:
+      - 256
+      - 256
+      - 256
+    activation: ReLU
+    append_dim: 0
+    latent_dim: 0
+    obs_dim: 5
+    action_dim: 5
+    action_range:
+      [ [-0.4, 0.4],
+        [-0.4, 0.4],
+        [-0.4, 0.4],
+        [-0.4, 0.4],
+        [-0.4, 0.4]]
+  critic_0:
+    mlp_dim:
+      - 128
+      - 128
+      - 128
+    activation: ReLU
+    append_dim: 0
+    latent_dim: 0
+    obs_dim: 5
+    action_dim: 7
+    pretrained_path: experiments/pre_ctrl/v1/model/aux/aux-3800000.pth
+
+train:
+  num_actors: 2
+  num_critics: 1
+  critic_0:
+    net_name: central
+    lr: 0.0001
+    lr_schedule: false
+    gamma: 0.999
+    gamma_schedule: false
+    tau: 0.005
+    eval: false
+    mode: safety
+    terminal_type: max
+    device: cuda:0
+    opt_type: AdamW
+    action_src: [ctrl, dstb]
+    update_target_period: 2
+  actor_0:
+    net_name: ctrl
+    actor_type: min
+    eval: true
+    device: cuda:0
+  actor_1:
+    net_name: dstb
+    actor_type: max
+    device: cuda:0
+    eval: false
+    learn_alpha: true
+    lr: 0.0001
+    lr_al: 0.00001
+    lr_schedule: false
+    lr_al_schedule: false
+    alpha: 0.005
+    pg_target: central
+    opt_type: AdamW
+    update_period: 2

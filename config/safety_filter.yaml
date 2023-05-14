@@ -1,0 +1,224 @@
+environment:
+  seed: 0
+  # TRACK
+  track_len: 20
+  track_width_right: .6
+  track_width_left: .6
+  # loop: true
+  timeout: 200
+  # DONE FLAG PARAM
+  end_criterion: failure
+  g_x_fail: 0.1
+  obs_type: perfect
+  obs_spec:
+    - [2, -0.4, 0., 0.25, 0.1]
+    - [5, 0.4, 0., 0.25, 0.1]
+    - [8, 0.1, 0., 0.25, 0.1]
+    - [11, -0.1, 0., 0.25, 0.1]
+    - [14, -0.4, 0., 0.25, 0.1]
+    - [14, 0.4, 0., 0.25, 0.1]
+  reset_space:
+    - [0., 1.]
+    - [-0.6, 0.6]
+    - [0.4, 2.0]
+    - [-1.5707, 1.5707]
+    - [-0.35, 0.35]
+
+cost:
+  bidirectional: false
+  cost_type: Lagrange
+  # CONSTRAINT PARAM
+  q1_road: 1.
+  q2_road: 10.
+  q1_yaw: 1.
+  q2_yaw: 10.
+  q1_obs: 1.
+  q2_obs: 10.
+  # COST PARAM
+  track_offset: 0.5
+  w_vel: 4.
+  w_contour: 4.
+  w_theta: 0.
+  w_accel: 0.01
+  w_omega: 0.01
+  v_ref: 1.5
+  barrier_clip_min: -0.25
+  barrier_clip_max: 5.0
+  #
+  yaw_min: -1.5707
+  yaw_max: 1.5707
+  has_vel_constr: false
+  has_delta_constr: false
+
+agent:
+  agent_id: ego
+  dyn: BicycleDstb5D
+  footprint: Box
+  state_box_limit: [0., 0.5, -0.1, 0.1]
+  action_range:  # * This is for clipping
+    ctrl:
+      - [-3.5, 3.5]
+      - [-5., 5.]
+    dstb:
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+  weight : 2.99  # kg
+  # CAR DYNAMICS
+  wheelbase: 0.257
+  dt: 0.1
+  v_min: 0.4
+  v_max: 2.
+  delta_min: -0.35
+  delta_max: 0.35
+
+arch:
+  actor_0:
+    mlp_dim:
+      - 256
+      - 256
+      - 256
+    activation: ReLU
+    append_dim: 0
+    latent_dim: 0
+    obs_dim: 5
+    action_dim: 2
+    action_range:
+      [ [-3.15, 3.15],
+        [-4.5, 4.5]]
+    pretrained_path: null
+  actor_1:
+    mlp_dim:
+      - 256
+      - 256
+      - 256
+    activation: ReLU
+    append_dim: 0
+    latent_dim: 0
+    obs_dim: 5
+    action_dim: 5
+    action_range:
+      [ [-0.3, 0.3],
+        [-0.3, 0.3],
+        [-0.3, 0.3],
+        [-0.3, 0.3],
+        [-0.3, 0.3]]
+    pretrained_path: null
+  critic_0:
+    mlp_dim:
+      - 128
+      - 128
+      - 128
+    activation: ReLU
+    append_dim: 0
+    latent_dim: 0
+    obs_dim: 5
+    action_dim: 7
+    pretrained_path: null
+
+train:
+  num_actors: 2
+  num_critics: 1
+  critic_0:
+    net_name: central
+    eval: true
+    # mode: safety
+    device: cuda:0
+    action_src: [ctrl, dstb]
+  actor_0:
+    net_name: ctrl
+    actor_type: min
+    device: cuda:0
+    eval: true
+  actor_1:
+    net_name: dstb
+    actor_type: max
+    device: cuda:0
+    eval: true
+
+ilqr:
+  plan_horizon: 20
+  tol: 0.01
+  max_iter: 50
+  device: cpu
+  reg_min: 0.0000001  # minimum regularization
+  reg_max: 1  # maximum regularization
+  reg_scale_down: 5  # scale down factor for regularization
+  reg_scale_up: 5  # scale up factor for regularization
+  reg_init: 0.00001  # initial regularization
+  max_attempt: 10
+
+main:
+  device: cpu
+  venv_device: cpu
+  num_envs: 2 # vectorized environment
+  num_trajs: 400
+  real_timeout: 200
+  reset_kwargs_file: /home/kai/Desktop/linc/experiments/safety_filter/0.2/init_states_400.pkl
+  test_safety: true
+  test_value: true
+  test_rollout: true
+  test_frs: true
+  real_dstb:
+    type: odp
+    range:  # ! only used if type is random
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+    step: 3450000  # ! only used if type is isaacs
+    odp_folder: /home/kai/Desktop/linc/ckpts/odp/  # ! only used if type is odp
+  imag_dstb:
+    type: isaacs
+    range:  # ! only used if type is random
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+      - [-0.2, 0.2]
+    step: 3450000  # ! only used if type is isaacs
+    odp_folder: /home/kai/Desktop/linc/ckpts/odp/  # ! only used if type is odp
+  safety:
+    root: /home/kai/Desktop/linc/experiments/linc/isaacs/small_ctrl/0.3/0
+    ctrl_step: 4000016
+    critic_step: 4000016  # ! only used if using value monitor
+    dstb_bound:  # for FRS computation
+      - [-0.21, 0.21]
+      - [-0.21, 0.21]
+      - [-0.21, 0.21]
+      - [-0.21, 0.21]
+      - [-0.21, 0.21]
+    filter:
+      value_thr_list: [0.0, -0.05, -0.1]  # ! only used if using value monitor
+      value_to_be_max: false  # ! only used if using value monitor
+      imag_timeout_list: [10, 20, 30, 50]  # ! only used if using rollout monitor
+      buffer: 0.01  # ! only used if using rollout monitor
+      override_dummy: false
+  # logs
+  concise: false
+  out_folder: /home/kai/Desktop/linc/experiments/safety_filter/
+
+ref_cost:
+  # CONSTRAINT PARAM
+  has_yaw_constr: false
+  has_road_constr: false
+  has_obs_constr: false
+  has_vel_constr: false
+  has_delta_constr: false
+  q1_road: 10.  # ! only used if this constraint is activated
+  q2_road: 10.  # ! only used if this constraint is activated
+  q1_yaw: 1.  # ! only used if this constraint is activated
+  q2_yaw: 10.  # ! only used if this constraint is activated
+  q1_obs: 10.  # ! only used if this constraint is activated
+  q2_obs: 10.  # ! only used if this constraint is activated
+  yaw_min: -1.5707  # ! only used if this constraint is activated
+  yaw_max: 1.5707  # ! only used if this constraint is activated
+  barrier_clip_min: -0.2  # ! only used if this constraint is activated
+  barrier_clip_max: 1.0  # ! only used if this constraint is activated
+  # COST PARAM
+  w_ref: [1.0, 10.0, 0.0, 2.0, 0.0]
+  w_accel: 0.1
+  w_omega: 0.1

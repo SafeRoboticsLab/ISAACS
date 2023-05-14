@@ -1,0 +1,100 @@
+environment:
+  seed: 0
+  # TRACK
+  track_len: 20
+  track_width_right: .6
+  track_width_left: .6
+  # loop: true
+  timeout: 200
+  # DONE FLAG PARAM
+  end_criterion: failure
+  g_x_fail: 0.1
+  obs_type: perfect
+  obs_spec:
+    - [2, -0.4, 0., 0.25, 0.1]
+    - [5, 0.4, 0., 0.25, 0.1]
+    - [8, 0.1, 0., 0.25, 0.1]
+    - [11, -0.1, 0., 0.25, 0.1]
+    - [14, -0.4, 0., 0.25, 0.1]
+    - [14, 0.4, 0., 0.25, 0.1]
+  reset_space:
+    - [0., 1.]
+    - [-0.6, 0.6]
+    - [0.4, 2.0]
+    - [-1.5707, 1.5707]
+    - [-0.35, 0.35]
+
+cost:
+  bidirectional: false
+  cost_type: Lagrange
+  # CONSTRAINT PARAM
+  q1_road: 1.
+  q2_road: 10.
+  q1_yaw: 1.
+  q2_yaw: 10.
+  q1_obs: 1.
+  q2_obs: 10.
+  # COST PARAM
+  track_offset: 0.5
+  w_vel: 4.
+  w_contour: 4.
+  w_theta: 0.
+  w_accel: 0.01
+  w_omega: 0.01
+  v_ref: 1.5
+  barrier_clip_min: -0.25
+  barrier_clip_max: 5.0
+  #
+  yaw_min: -1.5707
+  yaw_max: 1.5707
+  has_vel_constr: false
+  has_delta_constr: false
+
+agent:
+  agent_id: ego
+  dyn: BicycleDstb5D
+  footprint: Box
+  state_box_limit: [0., 0.5, -0.1, 0.1]
+  action_range:  # * This is for clipping
+    ctrl:
+      - [-3.5, 3.5]
+      - [-5., 5.]
+    dstb:
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+      - [-0.4, 0.4]
+  weight : 2.99  # kg
+  # CAR DYNAMICS
+  wheelbase: 0.257
+  dt: 0.1
+  v_min: 0.4
+  v_max: 2.
+  delta_min: -0.35
+  delta_max: 0.35
+
+main:
+  device: cpu
+  venv_device: cpu
+  num_envs: 4
+  num_eval_traj: 20
+  real_timeout: 50
+  rollout_end_criterion: failure
+  odp_folder: /home/kai/Desktop/linc/experiments/odp/bic5D/env_61_0.3_obs_road
+  # logs
+  out_folder: /home/kai/Desktop/linc/experiments/safety_filter/init
+
+ilqr:
+  init_state: [0., 0., 0.8, 0.0, 0.0]
+  plan_horizon: 20
+  tol: 0.01
+  max_iter: 50
+  max_iter_receding: 150
+  device: cpu
+  reg_min: 0.0000001  # minimum regularization
+  reg_max: 1  # maximum regularization
+  reg_scale_down: 5  # scale down factor for regularization
+  reg_scale_up: 5  # scale up factor for regularization
+  reg_init: 0.00001  # initial regularization
+  max_attempt: 10

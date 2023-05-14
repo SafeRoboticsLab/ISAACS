@@ -1,6 +1,7 @@
-from setuptools import setup
+import setuptools
 
-setup(
-    name="spirit_rl", version='0.0.1',
-    install_requires=['gym', 'pybullet', 'numpy', 'matplotlib']
+setuptools.setup(
+    name='isaacs',
+    packages=setuptools.find_packages(),
+    install_requires=[''],
 )

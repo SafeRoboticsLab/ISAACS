@@ -1,0 +1,3 @@
+[submodule "simulators"]
+	path = simulators
+	url = git@github.com:SafeRoboticsLab/simulators.git

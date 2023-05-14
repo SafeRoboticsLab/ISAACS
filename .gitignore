@@ -4,6 +4,15 @@ wandb/
 __pycache__/
 .ipynb_checkpoints/
 .vscode/
+figure/
+experiments/
+config/
+tmp/
+notebook/
+**/dataset/
+archive/
+notebook/
+**/__pycache__/
 
 # file type
 *.egg-info
@@ -11,3 +20,9 @@ __pycache__/
 *.pyc
 *.ipynb
 *.code-workspace
+**/*tmp*
+*.pkl
+test_ilqr_race_car.py
+optimized_dp/example*
+*dataset*
+.gitignore

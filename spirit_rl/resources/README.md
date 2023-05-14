@@ -1,1 +1,0 @@
-The spirit_simplified model of the spirit robot fix the hip angle to 0 and couple the movement of the lower joint and upper joint, so that they move the same

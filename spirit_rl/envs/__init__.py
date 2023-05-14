@@ -1,5 +1,0 @@
-from spirit_rl.envs.spirit_rl_env import SpiritRLEnv
-from spirit_rl.envs.spirit_rl_env_duo import SpiritRLEnvDuo
-from spirit_rl.envs.spirit_rl_env_performance import SpiritRLEnvPerformance
-from spirit_rl.envs.spirit_rl_env_performance_SAC import SpiritRLEnvPerformanceSAC
-from spirit_rl.envs.spirit_rl_env_adversarial import SpiritRLEnvAdversarial
