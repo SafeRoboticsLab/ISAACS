@@ -47,7 +47,7 @@ class BaseBlock(ABC):
   def build_optimizer(self, cfg):
     if cfg.opt_type == "AdamW":
       self.opt_cls = AdamW
-    elif cfg.opt_type == "AdamW":
+    elif cfg.opt_type == "Adam":
       self.opt_cls = Adam
     else:
       raise ValueError("Not supported optimizer type!")
