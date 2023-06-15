@@ -6,7 +6,8 @@
 # Licensed under The MIT License [see LICENSE for details]
 # --------------------------------------------------------
 
-from typing import Callable, Optional, Union, List, Any
+from typing import Callable, Optional, Union, List, Any, Tuple
+import matplotlib as mpl
 from matplotlib import cm
 import numpy as np
 import torch
@@ -225,8 +226,12 @@ def plot_step(
     plot_linear: bool = True,
     plot_even_failed: bool = True,
     only_check: bool = False,
+    figsize: Optional[Tuple[float, float]] = None,
 ):
-  fig, ax = plt.subplots(1, 1, figsize=(4, 2))
+  if figsize is None:
+    figsize = (4, 2)
+  fig, ax = plt.subplots(1, 1, figsize=figsize)
+  mpl.rcParams['font.family'] = 'monospace'
   if color_dict is None:
     color_dict = {
         'nominal': 'b',
@@ -266,13 +271,13 @@ def plot_step(
           adversary=test_adversary, reset_kwargs={'state': traj_n[0].copy()}
       )
       ax.plot(
-          traj_l[:stop, 0], traj_l[:stop, 1], linewidth=2, c='g',
-          linestyle='--'
+          traj_l[:stop, 0], traj_l[:stop, 1], linewidth=2,
+          c=color_dict['linear'], linestyle='--'
       )
       if plot_even_failed:
         ax.plot(
-            traj_l[stop - 1:, 0], traj_l[stop - 1:, 1], linewidth=2, c='g',
-            linestyle='--', alpha=0.5
+            traj_l[stop - 1:, 0], traj_l[stop - 1:, 1], linewidth=2,
+            c=color_dict['linear'], linestyle='--', alpha=0.5
         )
 
     plot_indices = np.linspace(1, len(zonotopes) - 1, 4, dtype=int)[1:]
@@ -327,6 +332,7 @@ def plot_step(
 
   ax.axis(extent)
   ax.set_aspect('equal')
+  ax.tick_params(axis='both', which='major', labelsize=fontsize - 2)
 
   if only_check:
     ax.axis('off')
@@ -339,12 +345,15 @@ def plot_step(
         txt = f" at {monitor_info['frs']['failure_idx']}"
       else:
         txt = ''
-      ax.set_title(f"Shields due to {monitor_info['raised_reason']}" + txt)
+      ax.set_title(
+          f"Shields due to {monitor_info['raised_reason']}" + txt,
+          fontsize=fontsize
+      )
     else:
-      ax.set_title("Uses task ctrl")
+      ax.set_title("Uses task ctrl", fontsize=fontsize)
     ax.legend(
-        fontsize=fontsize, ncol=3, framealpha=0., loc=10,
-        bbox_to_anchor=(0.5, -0.2)
+        ncol=3, framealpha=0., loc=10, bbox_to_anchor=(0.5, -0.2),
+        fontsize=fontsize - 4
     )
   plt.tight_layout()
   if savefig:

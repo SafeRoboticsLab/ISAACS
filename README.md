@@ -2,7 +2,7 @@
 
 <img src="media/overview.png" alt="drawing" width="88%"/>
 
-[[Webpage]](https://SafeRoboticsLab.github.io/ISAACS) | [[arXiv]](https://arxiv.org/abs/2212.03228)
+[[Webpage]](https://saferobotics.princeton.edu/research/isaacs) | [[arXiv]](https://arxiv.org/abs/2212.03228) | [[Paper]](https://proceedings.mlr.press/v211/hsu23a.html)
 
 [Kai-Chieh Hsu](https://kaichiehhsu.github.io/)<sup>1</sup>,
 [Duy Phuong Nguyen](https://www.linkedin.com/in/buzinguyen/)<sup>1</sup>,

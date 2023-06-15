@@ -344,7 +344,10 @@ class RobustFRSMonitor(RolloutMonitor):
           np.any(d_ctrls_max > self.ctrl_bound[:, 1] - nom_ctrl)
           or np.any(d_ctrls_min < self.ctrl_bound[:, 0] - nom_ctrl)
       ):
-        return True, 'ctrl'
+        ub_ratio = np.min((self.ctrl_bound[:, 1] - nom_ctrl) / d_ctrls_max)
+        lb_ratio = np.min((self.ctrl_bound[:, 0] - nom_ctrl) / d_ctrls_min)
+        return False, min(ub_ratio, lb_ratio)
+        # return False, 'ctrl'
 
     return False, None
 
@@ -398,6 +401,7 @@ class RobustFRSMonitor(RolloutMonitor):
     for i in range(K_closed_loop.shape[-1] + 1):
       if i == 0:  # don't monitor the initial state.
         override_flag = False
+        check_info = None
       else:
         if i == K_closed_loop.shape[-1]:  # don't check the last ctrl.
           check_ctrl = False
@@ -406,22 +410,26 @@ class RobustFRSMonitor(RolloutMonitor):
           check_ctrl = True
           K = K_closed_loop[..., i]
 
-        override_flag, reason = self.check_single_step_with_verts_sel(
+        override_flag, check_info = self.check_single_step_with_verts_sel(
             zono=zonotopes[-1], nom_state=nom_states[..., i],
             nom_ctrl=nom_ctrls[..., i], check_ctrl=check_ctrl, K_closed_loop=K
         )
 
       if override_flag:
         frs_info['failure_idx'] = i
-        info['raised_reason'] = reason
+        info['raised_reason'] = check_info
         break
       elif i != K_closed_loop.shape[-1]:
         input_box = self.dstb_bound.copy() - nom_dstbs[:, [i]]
         bias = fu[..., i] @ k_open_loop[..., i]
+        if check_info is None:
+          K = K_closed_loop[..., i]
+        else:  # scale
+          K = check_info * K_closed_loop[..., i]
         zonotopes.append(
             self.get_frs_step(
                 zonotopes[-1], fx=fx[..., i], fu=fu[..., i], fd=fd[..., i],
-                K_cl=K_closed_loop[..., i], input_box=input_box, bias=bias
+                K_cl=K, input_box=input_box, bias=bias
             )
         )
 
